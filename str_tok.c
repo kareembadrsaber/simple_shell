@@ -1,11 +1,11 @@
 #include "shell.h"
 /**
- * strtok_custom - Custom implementation of string tokenization using delimiters
- * @line: Pointer to the input string
- * @delim: Delimiter characters used to separate the string into tokens
- * Return: A pointer to the next token in the string, or NULL if no more tokens are found
- */
-char *strtok_custom(char *line, char *delim)
+ * _strtok - separates strings 
+ * @line: It´s pointer to array 
+ * @delim: It´s characters we mark off string in parts.
+ * Return: A pointer to the created token
+*/
+char *_strtok(char *line, char *delim)
 {
 	int j;
 	static char *str;

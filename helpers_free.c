@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * free_recurrent_data - Releases the resources associated with the fields used in each loop iteration.
- * @data: Structure containing the program's data.
- * Return: Nothing.
+ * free_recurrent_data 
+ * @data: struct of the program's data
+ * Return: no thing 
  */
-void free_recurrent_data(ProgramData *data)
+void free_recurrent_data(data_of_program *data)
 {
 	if (data->tokens)
 		free_array_of_pointers(data->tokens);
@@ -20,11 +20,11 @@ void free_recurrent_data(ProgramData *data)
 }
 
 /**
- * free_all_data - Releases all resources associated with the fields in the data structure.
- * @data: Struct containing the program's data.
- * Return: Nothing.
+ * free_all_data - free all field of the data
+ * @data: struct of the program's data
+ * Return: Nothing
  */
-void free_all_data(ProgramData *data);
+void free_all_data(data_of_program *data)
 {
 	if (data->file_descriptor != 0)
 	{
@@ -37,12 +37,11 @@ void free_all_data(ProgramData *data);
 }
 
 /**
- * free_array_of_pointers - Releases the memory occupied by each pointer in an array of pointers,
- *                          and then frees the array itself.
- * @directories: Array of pointers to be freed.
- * Return: Nothing.
+ * free_array_of_pointers 
+ * @array: array of pointers
+ * Return: nothing
  */
-void free_array_of_pointers(char **directories)
+void free_array_of_pointers(char **array)
 {
 	int i;
 

@@ -1,48 +1,48 @@
 #include "shell.h"
 
 /**
- * long_to_string - Converts a numeric value to its string representation.
- * @number: The number to be converted into a string.
- * @str: The buffer to store the resulting string.
- * @base: The base for the conversion (e.g., 10 for decimal, 16 for hexadecimal).
+ * long_to_string 
+ * @number: number to be converten in an string.
+ * @string: buffer to save the number as string.
+ * @base: base to convert number
  *
  * Return: Nothing.
  */
-void long_to_string(long number, char *str, int base)
+void long_to_string(long number, char *string, int base)
 {
 	int index = 0, inNegative = 0;
 	long cociente = number;
 	char letters[] = {"0123456789abcdef"};
 
 	if (cociente == 0)
-		str[index++] = '0';
+		string[index++] = '0';
 
-	if (str[0] == '-')
+	if (string[0] == '-')
 		inNegative = 1;
 
 	while (cociente)
 	{
 		if (cociente < 0)
-			str[index++] = letters[-(cociente % base)];
+			string[index++] = letters[-(cociente % base)];
 		else
-			str[index++] = letters[cociente % base];
+			string[index++] = letters[cociente % base];
 		cociente /= base;
 	}
 	if (inNegative)
-		str[index++] = '-';
+		string[index++] = '-';
 
-	str[index] = '\0';
-	str_reverse(str);
+	string[index] = '\0';
+	str_reverse(string);
 }
 
 
 /**
- * atoi_custom - Converts a string to an integer.
+ * _atoi - convert a string to an integer.
  *
- * @s: Pointer to the original string.
- * Return: The integer value of the string or 0.
+ * @s: pointer to str origen.
+ * Return: int of string or 0.
  */
-int atoi_custom(char *s)
+int _atoi(char *s)
 {
 	int sign = 1;
 	unsigned int number = 0;
@@ -67,19 +67,19 @@ int atoi_custom(char *s)
 }
 
 /**
- * count_characters - Determines the frequency of a specific character in a string.
+ * count_characters 
  *
- * @str: Pointer to the original string.
- * @character: String containing the character to be counted.
- * Return: The count of occurrences.
+ * @string: pointer to str .
+ * @character: string with  chars 
+ * Return: int of string .
  */
-int count_characters(char *str, char *character)
+int count_characters(char *string, char *character)
 {
 	int i = 0, counter = 0;
 
-	for (; str[i]; i++)
+	for (; string[i]; i++)
 	{
-		if (str[i] == character[0])
+		if (string[i] == character[0])
 			counter++;
 	}
 	return (counter);

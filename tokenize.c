@@ -1,10 +1,10 @@
 #include "shell.h"
 /**
- * tokenize - This function separates a string into different parts using a specified delimiter.
- * @data: A pointer to the program's data.
- * Return: An array containing the different parts of the string.
+ * tokenize - this function separate the string 
+ * @data: a pointer to the program's data
+ * Return: an array of the different parts 
  */
-void tokenize(ProgramData *data)
+void tokenize(data_of_program *data)
 {
 	char *delimiter = " \t";
 	int i, j, counter = 2, length;
