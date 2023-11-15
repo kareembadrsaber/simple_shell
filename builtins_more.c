@@ -1,9 +1,9 @@
 #include "shell.h"
 
 /**
- * builtin_exit - Exit the program with a specified status.
- * @data: Struct for the program's data.
- * Return: Zero on success, or other numbers as specified in the arguments.
+ * builtin_exit - Exits the program with the specified status.
+ * @data: A pointer to the program's data structure.
+ * Return: Zero on success, or an error code if specified in the arguments.
  */
 int builtin_exit(data_of_program *data)
 {
@@ -12,9 +12,9 @@ int builtin_exit(data_of_program *data)
 	if (data->tokens[1] != NULL)
 	{
 		for (i = 0; data->tokens[1][i]; i++)
-			if ((data->tokens[1][i] < '0' || data->tokens[1][i] > '9') &&
-				data->tokens[1][i] != '+')
-			{
+			if ((data->tokens[1][i] < '0' || data->tokens[1][i] > '9')
+				&& data->tokens[1][i] != '+')
+			
 				errno = 2;
 				return (2);
 			}
@@ -25,9 +25,9 @@ int builtin_exit(data_of_program *data)
 }
 
 /**
- * builtin_cd - Change the current directory.
- * @data: Struct for the program's data.
- * Return: Zero on success, or other numbers as specified in the arguments.
+ * builtin_cd - Change the current working directory.
+ * @data: A pointer to the program's data structure.
+ * Return: Zero on success, or a non-zero value in case of an error.
  */
 int builtin_cd(data_of_program *data)
 {
@@ -63,10 +63,10 @@ int builtin_cd(data_of_program *data)
 }
 
 /**
- * set_work_directory - Set the working directory.
- * @data: Struct for the program's data.
- * @new_dir: Path to be set as the working directory.
- * Return: Zero on success, or other numbers as specified in the arguments.
+ * set_work_directory - Sets the current working directory.
+ * @data: A pointer to the program's data structure.
+ * @new_dir: The path to be set as the working directory.
+ * Return: Zero on success, or a non-zero value if specified in the arguments.
  */
 int set_work_directory(data_of_program *data, char *new_dir)
 {
@@ -90,20 +90,21 @@ int set_work_directory(data_of_program *data, char *new_dir)
 }
 
 /**
- * builtin_help - Display information about built-in commands.
- * @data: Struct for the program's data.
- * Return: Zero on success, or other numbers as specified in the arguments.
+ * builtin_help - Displays information about built-in commands or general help.
+ * @data: A pointer to the program's data structure.
+ * Return: Zero on success, or another number if specified in the arguments.
  */
 int builtin_help(data_of_program *data)
 {
 	int i, length = 0;
-	char *messages[6] = {NULL};
+	char *mensajes[6] = {NULL};
 
-	messages[0] = HELP_MSG;
+	mensajes[0] = HELP_MSG;
+
 
 	if (data->tokens[1] == NULL)
 	{
-		_print(messages[0] + 6);
+		_print(mensajes[0] + 6);
 		return (1);
 	}
 	if (data->tokens[2] != NULL)
@@ -112,19 +113,19 @@ int builtin_help(data_of_program *data)
 		perror(data->command_name);
 		return (5);
 	}
+	mensajes[1] = HELP_EXIT_MSG;
+	mensajes[2] = HELP_ENV_MSG;
+	mensajes[3] = HELP_SETENV_MSG;
+	mensajes[4] = HELP_UNSETENV_MSG;
+	mensajes[5] = HELP_CD_MSG;
 
-	messages[1] = HELP_EXIT_MSG;
-	messages[2] = HELP_ENV_MSG;
-	messages[3] = HELP_SETENV_MSG;
-	messages[4] = HELP_UNSETENV_MSG;
-	messages[5] = HELP_CD_MSG;
-
-	for (i = 0; messages[i]; i++)
+	for (i = 0; mensajes[i]; i++)
 	{
+
 		length = str_length(data->tokens[1]);
-		if (str_compare(data->tokens[1], messages[i], length))
+		if (str_compare(data->tokens[1], mensajes[i], length))
 		{
-			_print(messages[i] + length + 1);
+			_print(mensajes[i] + length + 1);
 			return (1);
 		}
 	}
@@ -134,9 +135,9 @@ int builtin_help(data_of_program *data)
 }
 
 /**
- * builtin_alias - Add, remove, or show aliases.
- * @data: Struct for the program's data.
- * Return: Zero on success, or other numbers as specified in the arguments.
+ * builtin_alias - Manages aliases by adding, removing, or displaying them.
+ * @data: A pointer to the program's data structure.
+ * Return: Zero on success, or another number if specified in the arguments.
  */
 int builtin_alias(data_of_program *data)
 {
@@ -146,7 +147,7 @@ int builtin_alias(data_of_program *data)
 		return (print_alias(data, NULL));
 
 	while (data->tokens[++i])
-	{
+	
 		if (count_characters(data->tokens[i], "="))
 			set_alias(data->tokens[i], data);
 		else

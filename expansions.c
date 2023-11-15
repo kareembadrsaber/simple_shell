@@ -1,12 +1,15 @@
 #include "shell.h"
 
 /**
- * expand_variables - Processes variable expansion in the input line.
- * @data: A pointer to a struct containing the program's data.
+ * expand_variables - Expands variables in the input line.
+ * @data: A pointer to the struct containing the program's data.
  *
- * Return: Nothing, but updates errno if necessary.
+ * This function modifies the input line by expanding variables.
+ * It looks for specific patterns like "$?", "$$", and "$VAR" and replaces them
+ * with the corresponding values, such as the exit status, process ID, or
+ * environment variable value..
  */
-void expand_variables(ProgramData *data)
+void expand_variables(data_of_program *data)
 {
 	int i, j;
 	char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
@@ -51,12 +54,15 @@ void expand_variables(ProgramData *data)
 }
 
 /**
- * expand_alias - Processes alias expansion in the input line.
- * @data: A pointer to a struct containing the program's data.
+ /**
+ * expand_alias - Expands aliases in the input line.
+ * @data: A pointer to the struct containing the program's data.
  *
- * Return: Nothing, but updates errno if necessary.
+ * This function modifies the input line by expanding aliases. It looks for
+ * alias patterns in the input line and replaces them with their corresponding
+ * values.
  */
-void expand_alias(ProgramData *data)
+void expand_alias(data_of_program *data)
 {
 	int i, j, was_expanded = 0;
 	char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
@@ -93,10 +99,10 @@ void expand_alias(ProgramData *data)
 }
 
 /**
- * buffer_add - Appends a string to the end of the buffer.
- * @buffer: Buffer to which the string is added.
- * @str_to_add: String to be copied into the buffer.
- * Return: The updated length of the buffer.
+ * buffer_add - Appends a string at the end of the buffer.
+ * @buffer: The buffer to be filled.
+ * @str_to_add: The string to be copied into the buffer.
+ * Return: The length of the resulting buffer.
  */
 int buffer_add(char *buffer, char *str_to_add)
 {

@@ -4,9 +4,10 @@
  * print_alias - Manages aliases by adding, removing, or displaying them.
  * @data: A pointer to the program's data structure.
  * @alias: The name of the alias to be printed, or NULL to display all aliases.
- * Return: Zero on success, or another number if specified in the arguments.
+ * Return: Zero on success, or another value indicating specific conditions.
  */
-int print_alias(ProgramData *data, char *alias)
+
+int print_alias(data_of_program *data, char *alias)
 {
 	int i, j, alias_length;
 	char buffer[250] = {'\0'};
@@ -40,73 +41,75 @@ int print_alias(ProgramData *data, char *alias)
 /**
  * get_alias - Retrieves the value associated with an alias.
  * @data: A pointer to the program's data structure.
- * @alias: The name of the alias to look up.
+ * @alias: The name of the alias to retrieve.
  * Return: A pointer to the value of the alias, or NULL if the alias is not found.
  */
-char *get_alias(ProgramData *data, char *alias)
+char *get_alias(data_of_program *data, char *name)
 {
 	int i, alias_length;
 
-	/* validate the arguments */
-	if (alias == NULL || data->alias_list == NULL)
+	
+	if (name == NULL || data->alias_list == NULL)
 		return (NULL);
 
-	alias_length = str_length(alias);
+	alias_length = str_length(name);
 
 	for (i = 0; data->alias_list[i]; i++)
-	{/* Iterates through the environ and check for coincidence of the varname */
-		if (str_compare(alias, data->alias_list[i], alias_length) &&
+	{
+		if (str_compare(name, data->alias_list[i], alias_length) &&
 			data->alias_list[i][alias_length] == '=')
-		{/* returns the value of the key NAME=  when find it */
+		{
 			return (data->alias_list[i] + alias_length + 1);
 		}
 	}
-	/* returns NULL if did not find it */
 	return (NULL);
 
 }
 
 /**
  * set_alias - Adds or overrides an alias.
- * @alias_string: The alias to be set in the form (name='value').
+ * @alias_string: The alias to be defined in the format (name='value').
  * @data: A pointer to the program's data structure.
- * Return: Zero if successful, or a non-zero value if an error occurs.
+ * Return: Zero on success, or a non-zero value if an error occurs.
  */
-int set_alias(char *alias_string, ProgramData *data)
+
+int set_alias(char *alias_string, data_of_program *data)
 {
 	int i, j;
 	char buffer[250] = {'0'}, *temp = NULL;
 
-	/* validate the arguments */
+	
 	if (alias_string == NULL ||  data->alias_list == NULL)
 		return (1);
-	/* Iterates alias to find = char */
+	
 	for (i = 0; alias_string[i]; i++)
 		if (alias_string[i] != '=')
 			buffer[i] = alias_string[i];
 		else
-		{/* search if the value of the alias is another alias */
+		{
 			temp = get_alias(data, alias_string + i + 1);
 			break;
 		}
 
-	/* Iterates through the alias list and check for coincidence of the varname */
+	
 	for (j = 0; data->alias_list[j]; j++)
 		if (str_compare(buffer, data->alias_list[j], i) &&
 			data->alias_list[j][i] == '=')
-		{/* if the alias alredy exist */
+		{
 			free(data->alias_list[j]);
 			break;
 		}
 
-	/* add the alias */
+	
 	if (temp)
-	{/* if the alias already exist */
+	{
 		buffer_add(buffer, "=");
 		buffer_add(buffer, temp);
 		data->alias_list[j] = str_duplicate(buffer);
 	}
-	else /* if the alias does not exist */
+	else 
 		data->alias_list[j] = str_duplicate(alias_string);
 	return (0);
 }
+
+

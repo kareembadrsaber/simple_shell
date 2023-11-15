@@ -3,11 +3,11 @@
 int check_file(char *full_path);
 
 /**
- * find_program - Locates a program in the directories specified by the PATH environment variable.
+ * find_program - Find a program in the PATH environment variable.
  * @data: A pointer to the program's data.
- * Return: 0 if successful, an error code otherwise.
+ * Return: 0 if successful, errcode otherwise.
  */
-int find_program(ProgramData *data)
+int find_program(data_of_program *data)
 {
 	int i = 0, ret_code = 0;
 	char **directories;
@@ -15,7 +15,7 @@ int find_program(ProgramData *data)
 	if (!data->command_name)
 		return (2);
 
-	/**if is a full_path or an executable in the same path */
+	
 	if (data->command_name[0] == '/' || data->command_name[0] == '.')
 		return (check_file(data->command_name));
 
@@ -24,7 +24,7 @@ int find_program(ProgramData *data)
 	if (!data->tokens[0])
 		return (2);
 
-	directories = tokenize_path(data);/* search in the PATH */
+	directories = tokenize_path(data);
 
 	if (!directories || !directories[0])
 	{
@@ -32,11 +32,11 @@ int find_program(ProgramData *data)
 		return (127);
 	}
 	for (i = 0; directories[i]; i++)
-	{/* appends the function_name to path */
+	{
 		directories[i] = str_concat(directories[i], data->tokens[0]);
 		ret_code = check_file(directories[i]);
 		if (ret_code == 0 || ret_code == 126)
-		{/* the file was found, is not a directory and has execute permisions*/
+		{
 			errno = 0;
 			free(data->tokens[0]);
 			data->tokens[0] = str_duplicate(directories[i]);
@@ -51,37 +51,33 @@ int find_program(ProgramData *data)
 }
 
 /**
- * tokenize_path - Splits the directories in the PATH environment variable into an array.
+ * tokenize_path - Tokenize the PATH environment variable into directories.
  * @data: A pointer to the program's data.
  * Return: An array of path directories.
  */
-char **tokenize_path(ProgramData *data)
+char **tokenize_path(data_of_program *data)
 {
 	int i = 0;
 	int counter_directories = 2;
 	char **tokens = NULL;
 	char *PATH;
 
-	/* get the PATH value*/
 	PATH = env_get_key("PATH", data);
 	if ((PATH == NULL) || PATH[0] == '\0')
-	{/*path not found*/
+	{
 		return (NULL);
 	}
 
 	PATH = str_duplicate(PATH);
 
-	/* find the number of directories in the PATH */
 	for (i = 0; PATH[i]; i++)
 	{
 		if (PATH[i] == ':')
 			counter_directories++;
 	}
 
-	/* reserve space for the array of pointers */
 	tokens = malloc(sizeof(char *) * counter_directories);
 
-	/*tokenize and duplicate each token of path*/
 	i = 0;
 	tokens[i] = str_duplicate(_strtok(PATH, ":"));
 	while (tokens[i++])
@@ -96,9 +92,9 @@ char **tokenize_path(ProgramData *data)
 }
 
 /**
- * check_file - Verifies if a file exists, is not a directory, and has execution permissions.
+ * check_file - Checks if a file exists, is not a directory, and has execution permissions.
  * @full_path: Pointer to the full file name.
- * Return: 0 on success, or an error code if it exists.
+ * Return: 0 on success, or an error code if the conditions are not met.
  */
 int check_file(char *full_path)
 {
@@ -113,7 +109,6 @@ int check_file(char *full_path)
 		}
 		return (0);
 	}
-	/*if not exist the file*/
 	errno = 127;
 	return (127);
 }
